@@ -7,17 +7,17 @@ function love.load()
     scale = 0.5
 
     images = {
-        rock = love.graphics.newImage("rock.png"),
-        paper = love.graphics.newImage("paper.png"),
-        scissors = love.graphics.newImage("scissors.png"),
-        rock_pressed = love.graphics.newImage("rock_pressed.png"),
-        paper_pressed = love.graphics.newImage("paper_pressed.png"),
-        scissors_pressed = love.graphics.newImage("scissors_pressed.png")
+        rock = love.graphics.newImage("assets/rock.png"),
+        paper = love.graphics.newImage("assets/paper.png"),
+        scissors = love.graphics.newImage("assets/scissors.png"),
+        rock_pressed = love.graphics.newImage("assets/rock_pressed.png"),
+        paper_pressed = love.graphics.newImage("assets/paper_pressed.png"),
+        scissors_pressed = love.graphics.newImage("assets/scissors_pressed.png")
     }
 
     sounds = {
-        on_press = love.audio.newSource("click-press.mp3", "static"),
-        on_release = love.audio.newSource("click-release.mp3", "static")
+        on_press = love.audio.newSource("assets/click-press.mp3", "static"),
+        on_release = love.audio.newSource("assets/click-release.mp3", "static")
     }
 
     buttons = {
