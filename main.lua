@@ -4,8 +4,6 @@ Button = require("button")
 HorizontalLayoutManager = require("horizontal_layout_manager")
 
 function love.load()
-    -- The window size should affect the scale
-    -- love.window.setMode(800, 600, { resizable = true, vsync = true })
     scale = 0.5
 
     images = {
@@ -36,26 +34,21 @@ function love.load()
 end
 
 function love.mousepressed(x, y, mouseButton, istouch)
-    pressedButtons = {}
     for _, button in pairs(buttons) do
         if button:intersects(x, y) then
             button:press()
             button.sounds["on_press"]:play()
-            table.insert(pressedButtons, button) -- do we even need a table?
         end
     end
 end
 
 function love.mousereleased(x, y, mouseButton)
-    for _, button in pairs(pressedButtons) do
-        -- We want to call the draw function before we call release again, at least once
-        -- In love.update, this would be easier to manage. love.audio.newQueueableSource
-        -- seems to be an option for sound, but this won't work for updating the image.
-        button:release()
-        button.sounds["on_release"]:play()
+    for _, button in pairs(buttons) do
+        if button:intersects(x, y) then
+            button:release()
+            button.sounds["on_release"]:play()
+        end
     end
-    -- When Löve2D has access to table.clear (Lua 5.2), use that instead
-    pressedButtons = {}
  end
 
 function love.update(dt)
