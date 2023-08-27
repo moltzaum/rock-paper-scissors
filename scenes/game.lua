@@ -1,8 +1,10 @@
 -- Import Modules
 local HorizontalLayoutManager = require("ui/horizontal_layout_manager")
 local CircleButton = require("ui/circlebutton")
+local Scene = require("scenes/scene")
 
 local GameScene = {}
+setmetatable(GameScene, { __index = Scene })
 
 function GameScene.load()
     local images = {

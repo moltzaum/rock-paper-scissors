@@ -1,7 +1,9 @@
 local RectangleButton = require("ui/rectanglebutton")
+local Scene = require("scenes/scene")
 local bit = require("bit")
 
 local MainMenu = {}
+setmetatable(MainMenu, { __index = Scene })
 
 function MainMenu.load()
     local background_music

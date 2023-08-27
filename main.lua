@@ -3,8 +3,9 @@ local enet = require("enet")
 local socket = require("socket")
 
 local sounds
-GameScene = require("scenes/game")
 MainMenu = require("scenes/main_menu")
+GameScene = require("scenes/game")
+WaitingForGameScene = require("scenes/waiting")
 
 function love.load()
     -- Set up ENet host
@@ -19,7 +20,7 @@ function love.load()
     }
 
     math.randomseed(os.time())
-    scene = MainMenu
+    scene = WaitingForGameScene
     scene.load()
 end
 
