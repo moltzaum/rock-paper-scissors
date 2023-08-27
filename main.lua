@@ -18,6 +18,7 @@ function love.load()
         on_release = love.audio.newSource("assets/click-release.mp3", "static")
     }
 
+    math.randomseed(os.time())
     scene = MainMenu
     scene.load()
 end
