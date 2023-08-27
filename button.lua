@@ -44,12 +44,12 @@ end
 
 function Button:press()
     self.display = self.buttonPressedImg
-    sounds["on_press"]:play()
+    self.sounds["on_press"]:play()
 end
 
 function Button:release()
     self.display = self.buttonImg
-    sounds["on_release"]:play()
+    self.sounds["on_release"]:play()
 end
 
 function Button:draw()

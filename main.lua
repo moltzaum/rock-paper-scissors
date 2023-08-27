@@ -1,71 +1,33 @@
 -- Import Modules
-enet = require("enet")
-socket = require("socket")
-Button = require("button")
-HorizontalLayoutManager = require("horizontal_layout_manager")
+local enet = require("enet")
+local socket = require("socket")
+local GameScene = require("scenes/game")
 
 function love.load()
     -- Set up ENet host
-    server_ip = "127.0.0.1"
-    server_port = 12345
+    local server_ip, server_port = "127.0.0.1", 12345
     client = enet.host_create()
     peer = client:connect(server_ip .. ":" .. server_port)
     client:service(100)
 
-    scale = 0.5
-
-    images = {
-        rock = love.graphics.newImage("assets/rock.png"),
-        paper = love.graphics.newImage("assets/paper.png"),
-        scissors = love.graphics.newImage("assets/scissors.png"),
-        rock_pressed = love.graphics.newImage("assets/rock_pressed.png"),
-        paper_pressed = love.graphics.newImage("assets/paper_pressed.png"),
-        scissors_pressed = love.graphics.newImage("assets/scissors_pressed.png")
-    }
-
-    sounds = {
-        on_press = love.audio.newSource("assets/click-press.mp3", "static"),
-        on_release = love.audio.newSource("assets/click-release.mp3", "static")
-    }
-
-    buttons = {
-        rock = Button:new(images["rock"], images["rock_pressed"], sounds),
-        paper = Button:new(images["paper"], images["paper_pressed"], sounds),
-        scissors = Button:new(images["scissors"], images["scissors_pressed"], sounds)
-    }
-
-    rock_paper_scissors = HorizontalLayoutManager:new(100, 100)
-    rock_paper_scissors:addObject(buttons["rock"])
-    rock_paper_scissors:addObject(buttons["paper"])
-    rock_paper_scissors:addObject(buttons["scissors"])
-    rock_paper_scissors:layout()
+    -- TODO: Make another scene ;)
+    scene = GameScene
+    scene.load()
 end
 
 function love.mousepressed(x, y, mouseButton, istouch)
-    for name, button in pairs(buttons) do
-        if button:intersects(x, y) then
-            peer:send(name)
-            button:press()
-            button.sounds["on_press"]:play()
-        end
-    end
+    scene.mousepressed(x, y, mouseButton, istouch)
 end
 
 function love.mousereleased(x, y, mouseButton)
-    for _, button in pairs(buttons) do
-        if button:intersects(x, y) then
-            button:release()
-            button.sounds["on_release"]:play()
-        end
-    end
+    scene.mousereleased(x, y, mouseButton)
  end
 
 function love.update(dt)
-    -- TODO: have the server send back information and parse data from the server
-    client:service(50)
+    scene.update(dt)
 end
 
 function love.draw()
-    rock_paper_scissors:draw()
+    scene.draw()
 end
 
