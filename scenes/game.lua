@@ -14,11 +14,6 @@ function GameScene.load()
         scissors_pressed = love.graphics.newImage("assets/scissors_pressed.png")
     }
 
-    local sounds = {
-        on_press = love.audio.newSource("assets/click-press.mp3", "static"),
-        on_release = love.audio.newSource("assets/click-release.mp3", "static")
-    }
-
     local buttons = {
         rock = CircleButton:new(images["rock"], images["rock_pressed"]),
         paper = CircleButton:new(images["paper"], images["paper_pressed"]),
@@ -35,7 +30,6 @@ function GameScene.load()
     rock_paper_scissors:layout()
 
     GameScene.buttons = buttons
-    GameScene.sounds = sounds
 end
 
 function GameScene.mousepressed(x, y, mouseButton, istouch)
@@ -43,7 +37,6 @@ function GameScene.mousepressed(x, y, mouseButton, istouch)
         if button:intersects(x, y) then
             peer:send(name)
             button:press()
-            GameScene.sounds["on_press"]:play()
         end
     end
 end
@@ -52,7 +45,6 @@ function GameScene.mousereleased(x, y, mouseButton)
     for _, button in pairs(GameScene.buttons) do
         if button:intersects(x, y) then
             button:release()
-            GameScene.sounds["on_release"]:play()
         end
     end
 end

@@ -10,12 +10,6 @@ function MainMenu.load()
     MainMenu.titleFont = love.graphics.newFont("assets/JackInput.ttf", 24)
     love.graphics.setFont(MainMenu.titleFont)
 
-    MainMenu.sounds = {
-        on_press = love.audio.newSource("assets/click-press.mp3", "static"),
-        on_release = love.audio.newSource("assets/click-release.mp3", "static"),
-        click = love.audio.newSource("assets/mouse-click.mp3", "static")
-    }
-
     background_music = love.audio.newSource("assets/Stay the Course.mp3", "static")
     background_music:play()
 
@@ -25,7 +19,6 @@ end
 function MainMenu.mousepressed(x, y, mouseButton, istouch)
     if MainMenu.playButton:intersects(x, y) then
         MainMenu.playButton:press()
-        MainMenu.sounds["click"]:play()
         scene = GameScene
         scene.load()
     end
@@ -67,7 +60,7 @@ function MainMenu.createPlayButton()
     buttonImg = RectangleButton.createButtonImage("Play", font, r, g, b, 1)
     buttonPressedImg = RectangleButton.createButtonImage("Play", font, r * 0.8, g * 0.8, b * 0.8, 1)
 
-    local playButton = RectangleButton:new(buttonImg, buttonPressedImg, sounds)
+    local playButton = RectangleButton:new(buttonImg, buttonPressedImg)
     playButton.x = (love.graphics.getWidth() - playButton:getWidth()) / 2
     playButton.y = (love.graphics.getHeight() - playButton:getHeight()) / 2
     MainMenu.playButton = playButton
