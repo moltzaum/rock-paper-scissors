@@ -1,9 +1,17 @@
 -- Import Modules
+enet = require("enet")
 socket = require("socket")
 Button = require("button")
 HorizontalLayoutManager = require("horizontal_layout_manager")
 
 function love.load()
+    -- Set up ENet host
+    server_ip = "127.0.0.1"
+    server_port = 12345
+    client = enet.host_create()
+    peer = client:connect(server_ip .. ":" .. server_port)
+    client:service(100)
+
     scale = 0.5
 
     images = {
@@ -34,8 +42,9 @@ function love.load()
 end
 
 function love.mousepressed(x, y, mouseButton, istouch)
-    for _, button in pairs(buttons) do
+    for name, button in pairs(buttons) do
         if button:intersects(x, y) then
+            peer:send(name)
             button:press()
             button.sounds["on_press"]:play()
         end
@@ -52,6 +61,8 @@ function love.mousereleased(x, y, mouseButton)
  end
 
 function love.update(dt)
+    -- TODO: have the server send back information and parse data from the server
+    client:service(50)
 end
 
 function love.draw()
