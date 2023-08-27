@@ -1,7 +1,9 @@
 -- Import Modules
 local enet = require("enet")
 local socket = require("socket")
-local GameScene = require("scenes/game")
+
+GameScene = require("scenes/game")
+MainMenu = require("scenes/main_menu")
 
 function love.load()
     -- Set up ENet host
@@ -10,8 +12,7 @@ function love.load()
     peer = client:connect(server_ip .. ":" .. server_port)
     client:service(100)
 
-    -- TODO: Make another scene ;)
-    scene = GameScene
+    scene = MainMenu
     scene.load()
 end
 
@@ -21,7 +22,7 @@ end
 
 function love.mousereleased(x, y, mouseButton)
     scene.mousereleased(x, y, mouseButton)
- end
+end
 
 function love.update(dt)
     scene.update(dt)

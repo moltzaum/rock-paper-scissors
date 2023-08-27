@@ -1,9 +1,8 @@
 -- Import Modules
-local HorizontalLayoutManager = require("horizontal_layout_manager")
-local Button = require("button")
+local HorizontalLayoutManager = require("ui/horizontal_layout_manager")
+local CircleButton = require("ui/circlebutton")
 
 local GameScene = {}
-local Button = require("button")
 
 function GameScene.load()
     local images = {
@@ -21,9 +20,9 @@ function GameScene.load()
     }
 
     local buttons = {
-        rock = Button:new(images["rock"], images["rock_pressed"], sounds),
-        paper = Button:new(images["paper"], images["paper_pressed"], sounds),
-        scissors = Button:new(images["scissors"], images["scissors_pressed"], sounds)
+        rock = CircleButton:new(images["rock"], images["rock_pressed"]),
+        paper = CircleButton:new(images["paper"], images["paper_pressed"]),
+        scissors = CircleButton:new(images["scissors"], images["scissors_pressed"])
     }
 
     -- Used by the HorizontalLayoutManager
@@ -36,6 +35,7 @@ function GameScene.load()
     rock_paper_scissors:layout()
 
     GameScene.buttons = buttons
+    GameScene.sounds = sounds
 end
 
 function GameScene.mousepressed(x, y, mouseButton, istouch)
@@ -43,7 +43,7 @@ function GameScene.mousepressed(x, y, mouseButton, istouch)
         if button:intersects(x, y) then
             peer:send(name)
             button:press()
-            button.sounds["on_press"]:play()
+            GameScene.sounds["on_press"]:play()
         end
     end
 end
@@ -52,7 +52,7 @@ function GameScene.mousereleased(x, y, mouseButton)
     for _, button in pairs(GameScene.buttons) do
         if button:intersects(x, y) then
             button:release()
-            button.sounds["on_release"]:play()
+            GameScene.sounds["on_release"]:play()
         end
     end
 end
