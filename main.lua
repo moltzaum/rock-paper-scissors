@@ -20,7 +20,7 @@ function love.load()
     }
 
     math.randomseed(os.time())
-    scene = WaitingForGameScene
+    scene = MainMenu
     scene.load()
 end
 

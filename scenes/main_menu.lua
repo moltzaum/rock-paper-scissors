@@ -21,8 +21,9 @@ end
 function MainMenu.mousepressed(x, y, mouseButton, istouch)
     if MainMenu.playButton:intersects(x, y) then
         MainMenu.playButton:press()
-        scene = GameScene
-        scene.load()
+        peer:send("matchmaking")
+        -- scene = GameScene
+        -- scene.load()
     end
 end
 
@@ -31,7 +32,13 @@ function MainMenu.mousereleased(x, y, mouseButton)
 end
 
 function MainMenu.update(dt)
-
+    event = client:service(50)
+    if event and event.type == "receive" then
+        -- send data back using event.channel for the channel ID
+        print("event data:", event.data)
+    end
+    -- scene = GameScene
+    -- scene.load()
 end
 
 function MainMenu.draw()
