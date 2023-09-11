@@ -52,8 +52,6 @@ function GameScene.mousereleased(x, y, mouseButton)
 end
 
 function GameScene.update(dt)
-    -- TODO: have the server send back information and parse data from the server
-    client:service(50)
 end
 
 function GameScene.draw()

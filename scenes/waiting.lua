@@ -56,8 +56,6 @@ function WaitingForGameScene.load()
 end
 
 function WaitingForGameScene.update(dt)
-    -- TODO: have the server send back information and parse data from the server
-    -- client:service(50)
     waitingAnimation:update(dt)
 end
 

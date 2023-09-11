@@ -2,10 +2,12 @@
 local enet = require("enet")
 local socket = require("socket")
 
+-- Scenes
+local MainMenu = require("scenes/main_menu")
+local GameScene = require("scenes/game")
+local WaitingForGameScene = require("scenes/waiting")
+
 local sounds
-MainMenu = require("scenes/main_menu")
-GameScene = require("scenes/game")
-WaitingForGameScene = require("scenes/waiting")
 
 function love.load()
     -- Set up ENet host
@@ -34,8 +36,29 @@ function love.mousereleased(x, y, mouseButton)
     scene.mousereleased(x, y, mouseButton)
 end
 
+-- It may be preferrable to call client:service in the update function of each scene; such an
+-- approach is probably non-negotiable for larger projects, but I like the simplicity of handling
+-- all the logic here.
 function love.update(dt)
     scene.update(dt)
+    case =
+    {
+        ["matchmaking received"] = function()
+            scene = WaitingForGameScene
+            scene.load()
+        end,
+        ["match found"] = function()
+            scene = GameScene
+            scene.load()
+        end
+    }
+    event = client:service(50)
+    if event == nil then
+        return
+    end
+    if event.type == "receive" then
+        case[event.data]()
+    end
 end
 
 function love.draw()
