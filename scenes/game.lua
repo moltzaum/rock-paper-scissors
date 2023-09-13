@@ -2,6 +2,7 @@
 local HorizontalLayoutManager = require("ui/horizontal_layout_manager")
 local CircleButton = require("ui/circlebutton")
 local Scene = require("scenes/scene")
+local struct = require("deps/struct")
 
 local GameScene = {}
 setmetatable(GameScene, { __index = Scene })
@@ -37,7 +38,14 @@ end
 function GameScene.mousepressed(x, y, mouseButton, istouch)
     for name, button in pairs(GameScene.buttons) do
         if button:intersects(x, y) then
-            peer:send(name)
+            case =
+            {
+                ["rock"] = ROCK,
+                ["paper"] = PAPER,
+                ["scissors"] = SCISSORS
+            }
+            GameScene.choice = case[name]
+            peer:send(struct.pack('!B 16s', GameScene.choice, GameScene.match_id))
             button:press()
         end
     end

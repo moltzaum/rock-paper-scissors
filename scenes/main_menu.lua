@@ -1,6 +1,7 @@
 local RectangleButton = require("ui/rectanglebutton")
 local Scene = require("scenes/scene")
 local bit = require("bit")
+local struct = require("deps/struct")
 
 local MainMenu = {}
 setmetatable(MainMenu, { __index = Scene })
@@ -21,7 +22,7 @@ end
 function MainMenu.mousepressed(x, y, mouseButton, istouch)
     if MainMenu.playButton:intersects(x, y) then
         MainMenu.playButton:press()
-        peer:send("matchmaking")
+        peer:send(struct.pack('!B', MATCHMAKING_REQ))
     end
 end
 
