@@ -103,6 +103,11 @@ function love.update(dt)
     end
 end
 
+function love.quit()
+    peer:disconnect()
+    client:flush()
+end
+
 function love.draw()
     scene.draw()
 end

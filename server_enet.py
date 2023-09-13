@@ -93,9 +93,8 @@ def pair_match(matchmaking: Channel):
     while True:
         client1, client2 = matchmaking.get(), matchmaking.get()
 
-        # This tries to ensure the client is still connected before matching. It somewhat works,
-        # but the client disconnecting might be delayed.
-        # How to prevent race conditions and manage connections? Two General's Problem
+        # This works if the client shuts down correctly. A zombie peer will eventually be
+        # disconnected as well, but it may still be perceived as "connected" at this stage.
         if client1.peer.state is not enet.PEER_STATE_CONNECTED:
             matchmaking.put(client2)
             continue
