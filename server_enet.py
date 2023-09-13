@@ -13,10 +13,9 @@ Port = NewType('Port', int)
 
 # SERVER CONFIGURATION
 
-# The enet channel count will likely equal the peer count. enet should be able to handle 4K peers at
-# once, but I'm not sure what happens when more than 10 try to connect with the configuration below.
-# I'm not sure how to handle zombie peers or bandwidth issues. It's not clear if setting bandwidth
-# is preferable.
+# enet should be able to handle 4K peers at once, but I'm not sure what happens when more than 10
+# try to connect with the configuration below. I'm not sure how to handle bandwidth issues. It's not
+# clear if setting bandwidth is preferable.
 SERVER_IP: bytes = b"127.0.0.1"
 SERVER_PORT: int = 12345
 PEER_COUNT: int = 10
@@ -27,13 +26,13 @@ OUTGOING_BANDWIDTH = 0  # unlimited bandwidth
 # COMMUNICATION PROTOCOL
 
 # Matchmaking Sequence Diagram:
-# Client 1 -> REQ
-#             ACK   <- Server
+# Client 1 ->   REQ
+#               ACK       <- Server
 # ...
-# Client 2 -> REQ
-#             ACK   <- Server
+# Client 2 ->   REQ
+#               ACK       <- Server
 # Client 1, 2
-#             COMP  <- Server
+#               COMP [match_id] <- Server
 MATCHMAKING_REQ = 0b0001
 MATCHMAKING_ACK = 0b0010
 MATCHMAKING_COMP = 0b0011
