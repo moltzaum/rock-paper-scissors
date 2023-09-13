@@ -70,10 +70,10 @@ def rock_paper_scissors(event: enet.Event, choice: int, data: bytes):
     if choice1 and choice2:
         print("unexpected error: both game choices are already populated")
         return
-    elif choice1:
-        match[1][1] = choice
-    elif choice2:
+    elif peer1.address == event.peer.address and choice2:
         match[0][1] = choice
+    elif peer2.address == event.peer.address and choice1:
+        match[1][1] = choice
     elif peer1.address == event.peer.address:
         match[0][1] = choice
     elif peer2.address == event.peer.address:
