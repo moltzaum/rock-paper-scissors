@@ -5,7 +5,7 @@ setmetatable(WaitingForGameScene, { __index = Scene })
 
 AnimatedSheet = {}
 
-function AnimatedSheet:new(asset, frames, speed)
+function AnimatedSheet:new(asset, frames, speed, scale)
     local image, quads, spriteWidth, spriteHeight
 
     image = love.graphics.newImage(asset)
@@ -22,6 +22,7 @@ function AnimatedSheet:new(asset, frames, speed)
         y = 0,
         width = spriteWidth,
         height = spriteHeight,
+        scale = scale,
         speed = speed,
         frames = frames,
         image = image,
@@ -35,11 +36,11 @@ function AnimatedSheet:new(asset, frames, speed)
 end
 
 function AnimatedSheet:getWidth()
-    return self.width
+    return self.width * self.scale
 end
 
 function AnimatedSheet:getHeight()
-    return self.height
+    return self.height * self.scale
 end
 
 function AnimatedSheet:update(dt)
@@ -47,20 +48,34 @@ function AnimatedSheet:update(dt)
 end
 
 function AnimatedSheet:draw()
-    love.graphics.draw(self.image, self.quads[(math.floor(self.timer) % self.frames) + 1], x, y)
+    local rotation = 0
+    love.graphics.draw(self.image, self.quads[(math.floor(self.timer) % self.frames) + 1], self.x, self.y, rotation, self.scale)
 end
 
 function WaitingForGameScene.load()
-    local speed = 25
-    waitingAnimation = AnimatedSheet:new("assets/walking-finger-spritesheet.png", 28, speed)
+    local speed, scale = 25, 0.50
+    local waitingAnimation = AnimatedSheet:new("assets/walking-finger-spritesheet.png", 28, speed, scale)
+    waitingAnimation.x = (love.graphics.getWidth() - waitingAnimation:getWidth()) / 2
+    waitingAnimation.y = (love.graphics.getHeight() - waitingAnimation:getHeight()) / 2
+    waitingAnimation.y = waitingAnimation.y - (love.graphics.getHeight() / 2) * 0.33
+
+    WaitingForGameScene.waitingAnimation = waitingAnimation
+    WaitingForGameScene.text = "Waiting for match"
+    WaitingForGameScene.textFont = love.graphics.newFont("assets/Thin Design.ttf", 48)
+    love.graphics.setFont(WaitingForGameScene.textFont)
 end
 
 function WaitingForGameScene.update(dt)
-    waitingAnimation:update(dt)
+    WaitingForGameScene.waitingAnimation:update(dt)
 end
 
 function WaitingForGameScene.draw()
-    waitingAnimation:draw()
+    local text, font = WaitingForGameScene.text, WaitingForGameScene.textFont
+    local offset = 30
+    WaitingForGameScene.waitingAnimation:draw()
+    love.graphics.print(text,
+        (love.graphics.getWidth() - font:getWidth(text)) / 2,
+        (love.graphics.getHeight() - font:getHeight()) / 2 + offset)
 end
 
 return WaitingForGameScene
