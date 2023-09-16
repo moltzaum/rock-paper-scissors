@@ -97,8 +97,23 @@ function GameScene.mousepressed(x, y, mouseButton, istouch)
         local button = GameScene.continueButton
         if button:intersects(x, y) then
             button:press()
+        end
+        return
+    end
+    for _, button in pairs(GameScene.buttons) do
+        if button:intersects(x, y) then
+            button:press()
+        end
+    end
+end
+
+function GameScene.mousereleased(x, y, mouseButton)
+    if GameScene.gameWinText then
+        local button = GameScene.continueButton
+        if button:intersects(x, y) then
             GameScene.gameWinText = nil
         end
+        button:release()
         return
     end
     for name, button in pairs(GameScene.buttons) do
@@ -111,16 +126,8 @@ function GameScene.mousepressed(x, y, mouseButton, istouch)
             }
             GameScene.choice = case[name]
             peer:send(struct.pack('!B 16s', GameScene.choice, GameScene.match_id))
-            button:press()
         end
-    end
-end
-
-function GameScene.mousereleased(x, y, mouseButton)
-    -- releasing unconditionally seems to be better than adding conditional logic
-    GameScene.continueButton:release()
-    for _, button in pairs(GameScene.buttons) do
-            button:release()
+        button:release()
     end
 end
 

@@ -28,11 +28,13 @@ end
 function MainMenu.mousepressed(x, y, mouseButton, istouch)
     if MainMenu.playButton:intersects(x, y) then
         MainMenu.playButton:press()
-        peer:send(struct.pack('!B', MATCHMAKING_REQ))
     end
 end
 
 function MainMenu.mousereleased(x, y, mouseButton)
+    if MainMenu.playButton:intersects(x, y) then
+        peer:send(struct.pack('!B', MATCHMAKING_REQ))
+    end
     MainMenu.playButton:release()
 end
 
