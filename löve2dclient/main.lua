@@ -10,7 +10,13 @@ local WaitingForGameScene = require("scenes/waiting")
 
 local sounds
 
+function love.resize(w, h)
+    scene.layout()
+end
+
 function love.load()
+    love.window.setMode(800, 600, { resizable = true, vsync = true })
+
     -- Set up ENet host
     local server_ip, server_port = "127.0.0.1", 12345
     client = enet.host_create()

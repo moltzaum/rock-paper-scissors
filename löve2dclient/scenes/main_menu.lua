@@ -6,6 +6,11 @@ local struct = require("deps/struct")
 local MainMenu = {}
 setmetatable(MainMenu, { __index = Scene })
 
+function MainMenu.layout()
+    MainMenu.playButton.x = (love.graphics.getWidth() - MainMenu.playButton:getWidth()) / 2
+    MainMenu.playButton.y = (love.graphics.getHeight() - MainMenu.playButton:getHeight()) / 2
+end
+
 function MainMenu.load()
     local background_music
 
@@ -16,7 +21,8 @@ function MainMenu.load()
     background_music = love.audio.newSource("assets/Stay the Course.mp3", "static")
     background_music:play()
 
-    MainMenu.createPlayButton()
+    MainMenu.playButton = MainMenu.createPlayButton()
+    MainMenu.layout()
 end
 
 function MainMenu.mousepressed(x, y, mouseButton, istouch)
@@ -61,10 +67,7 @@ function MainMenu.createPlayButton()
     buttonImg = RectangleButton.createButtonImage("Play", font, r, g, b, 1)
     buttonPressedImg = RectangleButton.createButtonImage("Play", font, r * 0.8, g * 0.8, b * 0.8, 1)
 
-    local playButton = RectangleButton:new(buttonImg, buttonPressedImg)
-    playButton.x = (love.graphics.getWidth() - playButton:getWidth()) / 2
-    playButton.y = (love.graphics.getHeight() - playButton:getHeight()) / 2
-    MainMenu.playButton = playButton
+    return RectangleButton:new(buttonImg, buttonPressedImg)
 end
 
 return MainMenu

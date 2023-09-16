@@ -4,17 +4,22 @@ local AnimatedSheet = require("ui/animatedsheet")
 WaitingForGameScene = {}
 setmetatable(WaitingForGameScene, { __index = Scene })
 
-function WaitingForGameScene.load()
-    local speed, scale = 25, 0.50
-    local waitingAnimation = AnimatedSheet:new("assets/walking-finger-spritesheet.png", 28, speed, scale)
+function WaitingForGameScene.layout()
+    local waitingAnimation = WaitingForGameScene.waitingAnimation
     waitingAnimation.x = (love.graphics.getWidth() - waitingAnimation:getWidth()) / 2
     waitingAnimation.y = (love.graphics.getHeight() - waitingAnimation:getHeight()) / 2
     waitingAnimation.y = waitingAnimation.y - (love.graphics.getHeight() / 2) * 0.33
+end
+
+function WaitingForGameScene.load()
+    local speed, scale = 25, 0.50
+    local waitingAnimation = AnimatedSheet:new("assets/walking-finger-spritesheet.png", 28, speed, scale)
 
     WaitingForGameScene.waitingAnimation = waitingAnimation
     WaitingForGameScene.text = "Waiting for match"
     WaitingForGameScene.textFont = love.graphics.newFont("assets/Thin Design.ttf", 48)
     love.graphics.setFont(WaitingForGameScene.textFont)
+    WaitingForGameScene.layout()
 end
 
 function WaitingForGameScene.update(dt)

@@ -44,6 +44,24 @@ function GameScene.createCanvas(r, g, b, a)
     return canvas
 end
 
+function GameScene.layout()
+    -- TODO: try to remove this as a global variable eventually
+    scale = 0.5
+    -- center on x and y axis, then set internal objects with layout
+    local offset = -100
+    local rock_paper_scissors = GameScene.rock_paper_scissors
+    rock_paper_scissors.x = (love.graphics.getWidth() - rock_paper_scissors:getWidth()) / 2
+    rock_paper_scissors.y = (love.graphics.getHeight() - rock_paper_scissors:getHeight() + offset) / 2
+    rock_paper_scissors:layout()
+
+    local button = GameScene.continueButton
+    button.x = (love.graphics.getWidth() - button:getWidth()) / 2
+    button.y = (love.graphics.getHeight() - button:getHeight()) / 2
+
+    local canvas = GameScene.createCanvas(0, 0, 0, 0.5)
+    GameScene.continueBG = canvas
+end
+
 function GameScene.load()
     local images = {
         rock = love.graphics.newImage("assets/rock.png"),
@@ -60,33 +78,18 @@ function GameScene.load()
         scissors = CircleButton:new(images["scissors"], images["scissors_pressed"])
     }
 
-    -- Used by the HorizontalLayoutManager
-    -- TODO: try to remove this as a global variable eventually
-    scale = 0.5
-
     local rock_paper_scissors = HorizontalLayoutManager:new(100, 100)
     rock_paper_scissors:addObject(buttons["rock"])
     rock_paper_scissors:addObject(buttons["paper"])
     rock_paper_scissors:addObject(buttons["scissors"])
 
-    -- center on x and y axis, then set internal objects with layout
-    local offset = -100
-    rock_paper_scissors.x = (love.graphics.getWidth() - rock_paper_scissors:getWidth()) / 2
-    rock_paper_scissors.y = (love.graphics.getHeight() - rock_paper_scissors:getHeight() + offset) / 2
-    rock_paper_scissors:layout()
-
     GameScene.gameResultFont = love.graphics.newFont("assets/JackInput.ttf", 24)
     GameScene.continueFont = love.graphics.newFont("assets/gomarice_game_continue.ttf", 24)
-
-    local canvas = GameScene.createCanvas(0, 0, 0, 0.5)
-    local button = GameScene.createContinueButton(GameScene.continueFont)
-    button.x = (love.graphics.getWidth() - button:getWidth()) / 2
-    button.y = (love.graphics.getHeight() - button:getHeight()) / 2
+    GameScene.continueButton = GameScene.createContinueButton(GameScene.continueFont)
 
     GameScene.rock_paper_scissors = rock_paper_scissors
-    GameScene.continueButton = button
-    GameScene.continueBG = canvas
     GameScene.buttons = buttons
+    GameScene.layout()
 end
 
 function GameScene.mousepressed(x, y, mouseButton, istouch)

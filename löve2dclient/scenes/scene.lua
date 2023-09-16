@@ -1,5 +1,8 @@
 local Scene = {}
 
+function Scene.layout()
+end
+
 function Scene.load()
 end
 
