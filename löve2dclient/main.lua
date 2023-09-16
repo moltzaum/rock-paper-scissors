@@ -15,6 +15,7 @@ function love.resize(w, h)
 end
 
 function love.load()
+    love.window.setTitle("Rock! Paper! Scissors!")
     love.window.setMode(800, 600, { resizable = true, vsync = true })
 
     -- Set up ENet host
