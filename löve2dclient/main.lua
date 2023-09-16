@@ -19,7 +19,10 @@ function love.load()
 
     sounds = {
         on_press = love.audio.newSource("assets/click-press.mp3", "static"),
-        on_release = love.audio.newSource("assets/click-release.mp3", "static")
+        on_release = love.audio.newSource("assets/click-release.mp3", "static"),
+        rock_win = love.audio.newSource("assets/rock-win.mp3", "static"),
+        paper_win = love.audio.newSource("assets/paper-win.mp3", "static"),
+        scissors_win = love.audio.newSource("assets/scissors-win.mp3", "static")
     }
 
     math.randomseed(os.time())
@@ -61,33 +64,39 @@ function love.update(dt)
             scene.load()
         end,
         [ROCK] = function()
-            -- TODO: reflect the state in the client with a message and write a common function
+            -- TODO: write a function to do this in a simpler manner
             if GameScene.choice == PAPER then
-                print("you won!")
+                GameScene.gameWinText = "You Win!"
+                sounds["paper_win"]:play()
             elseif GameScene.choice == SCISSORS then
-                print("you lose!")
+                GameScene.gameWinText = "You Lost :("
+                sounds["rock_win"]:play()
             else
-                print("tie!")
+                GameScene.gameWinText = "You got a tie."
             end
             GameScene.choice = nil
         end,
         [PAPER] = function()
             if GameScene.choice == SCISSORS then
-                print("you won!")
+                GameScene.gameWinText = "You Win!"
+                sounds["scissors_win"]:play()
             elseif GameScene.choice == ROCK then
-                print("you lost!")
+                GameScene.gameWinText = "You Lost :("
+                sounds["paper_win"]:play()
             else
-                print("tie!")
+                GameScene.gameWinText = "You got a tie."
             end
             GameScene.choice = nil
         end,
         [SCISSORS] = function()
             if GameScene.choice == ROCK then
-                print("you won!")
+                GameScene.gameWinText = "You Win!"
+                sounds["rock_win"]:play()
             elseif GameScene.choice == PAPER then
-                print("you lost!")
+                GameScene.gameWinText = "You Lost :("
+                sounds["scissors_win"]:play()
             else
-                print("tie!")
+                GameScene.gameWinText = "You got a tie."
             end
             GameScene.choice = nil
         end

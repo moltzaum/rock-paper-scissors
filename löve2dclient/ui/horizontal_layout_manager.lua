@@ -1,9 +1,11 @@
 local HorizontalLayoutManager = {}
 
-function HorizontalLayoutManager:new(x, y)
+function HorizontalLayoutManager:new()
     local self = {
-        x = x,
-        y = y,
+        x = 0,
+        y = 0,
+        height = 0,
+        width = 0,
         objects = {}
     }
     setmetatable(self, { __index = HorizontalLayoutManager })
@@ -11,7 +13,23 @@ function HorizontalLayoutManager:new(x, y)
 end
 
 function HorizontalLayoutManager:addObject(object)
+    if self.height < object:getHeight() then
+        self.height = object:getHeight()
+    end
+    if next(self.objects) == nil then
+        self.width = self.width + object:getWidth()
+    else
+        self.width = self.width + object:getWidth() + self.objects[#self.objects].padding["right"]
+    end
     table.insert(self.objects, object)
+end
+
+function HorizontalLayoutManager:getHeight()
+    return self.height * scale
+end
+
+function HorizontalLayoutManager:getWidth()
+    return self.width * scale
 end
 
 function HorizontalLayoutManager:layout()
@@ -28,7 +46,7 @@ function HorizontalLayoutManager:layout()
     end
 end
 
-function HorizontalLayoutManager:draw()    
+function HorizontalLayoutManager:draw()
     for name, element in pairs(self.objects) do
         element:draw()
     end
