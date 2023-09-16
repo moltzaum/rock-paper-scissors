@@ -39,11 +39,10 @@ OPPONENT_NOT_CONNECTED = 0b0111
 ```
 
 Currently, the client and server have only been run on a local machine. So, it's not clear if it
-works in a real network environment. Signals are primarily "fire and forget", but I did make an ACK
-signal for the matchmaking process. The game logic is simple enough, this "fire and forget" strategy
-may be acceptable, but when I look at the matchmaking at least, it seems incomplete without
-timeouts. Some research into the Two General's problem seems to indicate rethinking the
-implementaion would be a good idea.
+works in a real network environment. Signals are primarily "fire and forget", but there is an ACK
+signal for the matchmaking process. The game logic is simple enough that "fire and forget" strategy
+may be acceptable, but the matchmaking at least seems incomplete without timeouts. Some research
+into the Two General's problem seems to indicate rethinking the implementaion would be a good idea.
 
 Regarding networking, there is also no client ID outside of the host address:port combination. As
 noted in the source code, this is not a good identifier because the the address and port can be
