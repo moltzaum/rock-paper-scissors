@@ -83,6 +83,17 @@ function GameScene.load()
     rock_paper_scissors:addObject(buttons["paper"])
     rock_paper_scissors:addObject(buttons["scissors"])
 
+    if background_music ~= nil then
+        background_music:stop()
+    end
+    local choices = {
+        [1] = music["fight_1"],
+        [2] = music["fight_2"],
+        [3] = music["fight_3"]
+    }
+    background_music = choices[math.random(1, 3)]
+    background_music:play()
+
     GameScene.gameResultFont = love.graphics.newFont("assets/JackInput.ttf", 24)
     GameScene.continueFont = love.graphics.newFont("assets/gomarice_game_continue.ttf", 24)
     GameScene.continueButton = GameScene.createContinueButton(GameScene.continueFont)

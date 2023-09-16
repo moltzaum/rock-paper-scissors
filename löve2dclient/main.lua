@@ -23,6 +23,12 @@ function love.load()
     peer = client:connect(server_ip .. ":" .. server_port)
     client:service(100)
 
+    music = {
+        anticipation = love.audio.newSource("assets/Stay the Course.mp3", "static"),
+        fight_1 = love.audio.newSource("assets/Ready to Fight - Fesliyan.mp3", "static"),
+        fight_2 = love.audio.newSource("assets/Action Rhythms - Fesliyan.mp3", "static"),
+        fight_3 = love.audio.newSource("assets/Escape Route - Fesliyan.mp3", "static")
+    }
     sounds = {
         on_press_sd = love.sound.newSoundData("assets/click-press.mp3"),
         on_release_sd = love.sound.newSoundData("assets/click-release.mp3"),
@@ -63,6 +69,7 @@ MATCHMAKING_REQ = 1
 MATCHMAKING_ACK = 2
 MATCHMAKING_COMP = 3
 ROCK, PAPER, SCISSORS = 4, 5, 6
+OPPONENT_NOT_CONNECTED = 7
 
 -- It may be preferrable to call client:service in the update function of each scene; such an
 -- approach is probably non-negotiable for larger projects, but I like the simplicity of handling
@@ -79,6 +86,13 @@ function love.update(dt)
             local match_id
             _, GameScene.match_id = struct.unpack('!B 16s', event.data)
             scene = GameScene
+            scene.load()
+        end,
+        [OPPONENT_NOT_CONNECTED] = function()
+            -- I like the idea of having an overlay that asks if the player wants to queue a new game, quit, or
+            -- go to the main menu. I'm not sure if I want to implement it though.
+            GameScene.choice = nil
+            scene = MainMenu
             scene.load()
         end,
         [ROCK] = function()

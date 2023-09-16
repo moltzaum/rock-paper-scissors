@@ -47,9 +47,10 @@ MATCHMAKING_COMP = 0b0011
 #             ROCK <- Server
 ROCK, PAPER, SCISSORS = 0b0100, 0b0101, 0b0110
 
+OPPONENT_NOT_CONNECTED = 0b0111
+
 
 # Matches are stored in-memory. A server crashing would be fatal.
-# This data structure grows continuously. TODO: remove stale entries or when client disconnects
 matches = dict()
 
 
@@ -118,6 +119,26 @@ def pair_match(matchmaking: Channel):
         client2.peer.send(0, enet.Packet(data, enet.PACKET_FLAG_RELIABLE))
 
 
+# Iterating over the matches may seem like an odd way to remove the client at first glance, but
+# we can't rely on the client to send the match ID when it disconnects (for example, due to the
+# game crashing). Clients are not trusted (hacked clients may exist), so we don't want them to
+# affect the server.
+#
+# A data structure could be created to relate the address to the match_id in a separate reverse
+# lookup dictionary, but this does not seem necessary to implement.
+def remove_client(address: enet.Address):
+    packet = enet.Packet(struct.pack('!B', OPPONENT_NOT_CONNECTED), enet.PACKET_FLAG_RELIABLE)
+    for key, peer1, peer2 in ((key, value[0][0], value[1][0]) for key, value in matches.items()):
+        if peer1.address == address:
+            peer2.send(0, packet)
+            matches.pop(key, None)
+            return
+        if peer2.address == address:
+            peer1.send(0, packet)
+            matches.pop(key, None)
+            return
+
+
 def handle_request(ch: Dict[str, Channel], event: enet.Event):
     # A tuple is technically returned but there is only one value
     protocol, = struct.unpack('!B', event.packet.data[:1])
@@ -138,6 +159,7 @@ def listen(ch: Dict[str, Channel], host):
         print(f"{event.peer.address}: Client connected")
     elif event.type == enet.EVENT_TYPE_DISCONNECT:
         print(f"{event.peer.address}: Client disconnected")
+        remove_client(event.peer.address)
     elif event.type == enet.EVENT_TYPE_RECEIVE:
         print(f"Receive from {event.peer.address}::{event.channelID}")
         handle_request(ch, event)

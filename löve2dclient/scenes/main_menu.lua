@@ -12,15 +12,17 @@ function MainMenu.layout()
 end
 
 function MainMenu.load()
-    local background_music
-
     MainMenu.title = "Rock! Paper! Scissors!"
     MainMenu.titleFont = love.graphics.newFont("assets/JackInput.ttf", 24)
     love.graphics.setFont(MainMenu.titleFont)
 
-    background_music = love.audio.newSource("assets/Stay the Course.mp3", "static")
+    if background_music ~= nil then
+        background_music:stop()
+    end
+    background_music = music["anticipation"]
     background_music:play()
 
+    scale = 1
     MainMenu.playButton = MainMenu.createPlayButton()
     MainMenu.layout()
 end
