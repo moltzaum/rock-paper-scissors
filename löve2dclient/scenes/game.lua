@@ -114,13 +114,10 @@ function GameScene.mousepressed(x, y, mouseButton, istouch)
 end
 
 function GameScene.mousereleased(x, y, mouseButton)
-    -- releasing unconditionally seems to be better than adding logic
-    -- I'll keep the behavior for the other buttons as they were though
+    -- releasing unconditionally seems to be better than adding conditional logic
     GameScene.continueButton:release()
     for _, button in pairs(GameScene.buttons) do
-        if button:intersects(x, y) then
             button:release()
-        end
     end
 end
 
