@@ -18,13 +18,19 @@ function love.load()
     client:service(100)
 
     sounds = {
-        on_press = love.audio.newSource("assets/click-press.mp3", "static"),
-        on_release = love.audio.newSource("assets/click-release.mp3", "static"),
+        on_press_sd = love.sound.newSoundData("assets/click-press.mp3"),
+        on_release_sd = love.sound.newSoundData("assets/click-release.mp3"),
         rock_win = love.audio.newSource("assets/rock-win.mp3", "static"),
         paper_win = love.audio.newSource("assets/paper-win.mp3", "static"),
         scissors_win = love.audio.newSource("assets/scissors-win.mp3", "static"),
         tie = love.audio.newSource("assets/tie.mp3", "static")
     }
+    local click_source = love.audio.newQueueableSource(
+        sounds["on_press_sd"]:getSampleRate(),
+        sounds["on_press_sd"]:getBitDepth(),
+        sounds["on_press_sd"]:getChannelCount(),
+        2)
+    sounds["click_source"] = click_source
 
     math.randomseed(os.time())
     scene = MainMenu
@@ -32,12 +38,17 @@ function love.load()
 end
 
 function love.mousepressed(x, y, mouseButton, istouch)
-    sounds["on_press"]:play()
+    sounds["click_source"]:queue(sounds["on_press_sd"], sounds["on_press_sd"]:getSize() * 0.50)
+    sounds["click_source"]:play()
     scene.mousepressed(x, y, mouseButton, istouch)
 end
 
 function love.mousereleased(x, y, mouseButton)
-    sounds["on_release"]:play()
+    -- Scaling the size down so that there isn't too much lag between sounds played.
+    -- The scaling is aligned to the sample size (4 in this case)
+    local size = math.floor(sounds["on_release_sd"]:getSize() * 0.30 / 4) * 4
+    sounds["click_source"]:queue(sounds["on_release_sd"], size)
+    sounds["click_source"]:play()
     scene.mousereleased(x, y, mouseButton)
 end
 
