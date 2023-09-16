@@ -22,7 +22,8 @@ function love.load()
         on_release = love.audio.newSource("assets/click-release.mp3", "static"),
         rock_win = love.audio.newSource("assets/rock-win.mp3", "static"),
         paper_win = love.audio.newSource("assets/paper-win.mp3", "static"),
-        scissors_win = love.audio.newSource("assets/scissors-win.mp3", "static")
+        scissors_win = love.audio.newSource("assets/scissors-win.mp3", "static"),
+        tie = love.audio.newSource("assets/tie.mp3", "static")
     }
 
     math.randomseed(os.time())
@@ -73,6 +74,7 @@ function love.update(dt)
                 sounds["rock_win"]:play()
             else
                 GameScene.gameWinText = "You got a tie."
+                sounds["tie"]:play()
             end
             GameScene.choice = nil
         end,
@@ -85,6 +87,7 @@ function love.update(dt)
                 sounds["paper_win"]:play()
             else
                 GameScene.gameWinText = "You got a tie."
+                sounds["tie"]:play()
             end
             GameScene.choice = nil
         end,
@@ -97,6 +100,7 @@ function love.update(dt)
                 sounds["scissors_win"]:play()
             else
                 GameScene.gameWinText = "You got a tie."
+                sounds["tie"]:play()
             end
             GameScene.choice = nil
         end
