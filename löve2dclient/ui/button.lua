@@ -41,7 +41,8 @@ function Button:new(buttonImg, buttonPressedImg)
         y = 0,
         buttonImg = buttonImg,
         buttonPressedImg = buttonPressedImg,
-        display = buttonImg
+        display = buttonImg,
+        dirty = false,
     }
 
     local padding = {
@@ -65,6 +66,7 @@ function Button:getHeight()
 end
 
 function Button:press()
+    self.dirty = true
     self.display = self.buttonPressedImg
 end
 
@@ -96,7 +98,12 @@ end
 function CircleButton:draw()
     local x, y = self:origin()
     local radius = self:radius()
-    love.graphics.draw(self.display, self.x, self.y, 0, scale, scale)
+    if self.dirty then
+        love.graphics.draw(self.buttonPressedImg, self.x, self.y, 0, scale, scale)
+        self.dirty = false
+    else
+        love.graphics.draw(self.display, self.x, self.y, 0, scale, scale)
+    end
     love.graphics.circle("line", x, y, radius)
 end
 
