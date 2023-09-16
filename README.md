@@ -44,9 +44,9 @@ signal for the matchmaking process. The game logic is simple enough that "fire a
 may be acceptable, but the matchmaking at least seems incomplete without timeouts. Some research
 into the Two General's problem seems to indicate rethinking the implementaion would be a good idea.
 
-Regarding networking, there is also no client ID outside of the host address:port combination. As
-noted in the source code, this is not a good identifier because the the address and port can be
-spoofed. Liberties were taken due to the unserious nature of this prototype.
+Regarding networking, there is no client ID outside of the host address:port combination. As noted
+in the source code, this is not a good identifier because the the address and port can be spoofed.
+Liberties were taken due to the unserious nature of this prototype.
 
 ## Game Scenes
 
